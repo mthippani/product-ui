@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType, Effect } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { fetch } from '@nrwl/angular';
 import { catchError, map, Observable, of, switchMap } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { ProductInfoService } from './product-info.service';
 
 @Injectable()
 export class ProductInfoEffects {
-  constructor(private actions$: Actions, private service: ProductInfoService) {}
+  constructor(private actions$: Actions, private service: ProductInfoService,private store:Store) {}
 
   loadProducts$ = createEffect(() =>
     this.actions$.pipe(
@@ -35,7 +35,8 @@ export class ProductInfoEffects {
       switchMap((action) =>
         this.service.getProduct(action.id).pipe(
           map((product: Product) =>
-            ProductInfoActions.loadProductSuccess({ product })
+            {     
+              return ProductInfoActions.loadProductSuccess({ product })}
           ),
           catchError(async (error) =>
             ProductInfoActions.loadProductFailure(error)
@@ -51,7 +52,9 @@ export class ProductInfoEffects {
       switchMap((action) =>
         this.service.createProduct(action.product).pipe(
           map((product: Product) =>
-            ProductInfoActions.loadProductSuccess({ product })
+            {               
+              this.store.dispatch(ProductInfoActions.loadAllProducts());
+              return ProductInfoActions.loadProductSuccess({ product })}
           ),
           catchError(async (error) =>
             ProductInfoActions.loadProductFailure(error)
@@ -67,7 +70,9 @@ export class ProductInfoEffects {
       switchMap((action) =>
         this.service.updateProduct(action.id, action.product).pipe(
           map((product: Product) =>
-            ProductInfoActions.updateProductSuccess({ product })
+            {
+              this.store.dispatch(ProductInfoActions.loadAllProducts());
+              return ProductInfoActions.updateProductSuccess({ product })}
           ),
           catchError(async (error) =>
             ProductInfoActions.updateProductFailure(error)
@@ -83,7 +88,9 @@ export class ProductInfoEffects {
       switchMap((action) =>
         this.service.delete(action.id).pipe(
           map((product: Product) =>
-            ProductInfoActions.deleteProductSuccess({ product })
+            {              
+              this.store.dispatch(ProductInfoActions.loadAllProducts());
+              return ProductInfoActions.deleteProductSuccess({ product })}
           ),
           catchError(async (error) =>
             ProductInfoActions.deleteProductFailure(error)

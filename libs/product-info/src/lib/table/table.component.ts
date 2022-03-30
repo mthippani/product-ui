@@ -87,8 +87,6 @@ export class TableComponent implements OnInit, AfterViewInit {
   openEditModal(id: number) {
     this.store.dispatch(loadProduct({ id }));
     this.dialog.open(EditModalComponent, { width: '30rem', data: { id } });
-
-    
   }
 
   deleteProduct(id: number) {

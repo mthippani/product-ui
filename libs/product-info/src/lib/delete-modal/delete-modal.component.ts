@@ -27,6 +27,5 @@ export class DeleteModalComponent implements OnInit {
   onDelete(id: number) {
     this.store.dispatch(deleteProduct({ id }));
     this.matDialog.closeAll();
-    this.store.dispatch(loadAllProducts());
   }
 }

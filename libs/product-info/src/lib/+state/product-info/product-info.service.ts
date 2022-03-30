@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/internal/operators/map';
 import { Product } from './product-info.models';
 
 @Injectable({
@@ -9,7 +8,13 @@ import { Product } from './product-info.models';
 })
 export class ProductInfoService {
   baseUrl = 'http://localhost:3000/api/products';
-  constructor(private http: HttpClient) {}
+  headers!: HttpHeaders;
+
+  constructor(private http: HttpClient) {
+    this.headers== new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('Access-Control-Allow-Origin', '*');
+  }
 
   findAllProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.baseUrl);
@@ -20,11 +25,11 @@ export class ProductInfoService {
   }
 
   createProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.baseUrl, product);
+    return this.http.post<Product>(this.baseUrl, product,{headers:this.headers});
   }
 
   updateProduct(id: number, product: Product): Observable<Product> {
-    return this.http.put<Product>(`${this.baseUrl}/${id}`, product);
+    return this.http.put<Product>(`${this.baseUrl}/${id}`, product, {headers:this.headers});
   }
 
   delete(id: number): Observable<Product> {

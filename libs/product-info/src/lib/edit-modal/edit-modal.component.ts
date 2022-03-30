@@ -54,6 +54,5 @@ export class EditModalComponent implements OnInit {
   update(product: Product) {
     this.store.dispatch(updateProduct({ id: this.id, product }));
     this.matDialog.closeAll();
-    this.store.dispatch(loadAllProducts());
   }
 }
