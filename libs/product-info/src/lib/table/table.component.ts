@@ -57,8 +57,6 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     fromEvent(this.filter.nativeElement, 'keyup')
-      // .debounceTime(150)
-      // .distinctUntilChanged()
       .subscribe(() => {
         if (!this.dataSource) {
           return;
@@ -84,61 +82,19 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   openAddModal() {
     this.dialog.open(AddModalComponent, { width: '30rem' });
-
-    // const dialogRef = this.dialogService.open(AddDialogComponent, {
-    //   data: {issue: {} }
-    // });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result === 1) {
-    //     // After dialog is closed we're doing frontend updates
-    //     // For add we're just pushing a new row inside DataService
-    //     this.exampleDatabase.dataChange.value.push(this.dataService.getDialogData());
-    //     this.refreshTable();
-    //   }
-    // });
   }
 
   openEditModal(id: number) {
     this.store.dispatch(loadProduct({ id }));
     this.dialog.open(EditModalComponent, { width: '30rem', data: { id } });
 
-    // this.id = id;
-    // // index row is used just for debugging proposes and can be removed
-    // this.index = i;
-    // console.log(this.index);
-    // const dialogRef = this.dialogService.open(EditDialogComponent, {
-    //   data: {id: id, title: title, state: state, url: url, created_at: created_at, updated_at: updated_at}
-    // });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result === 1) {
-    //     // When using an edit things are little different, firstly we find record inside DataService by id
-    //     const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.id === this.id);
-    //     // Then you update that record using data from dialogData (values you enetered)
-    //     this.exampleDatabase.dataChange.value[foundIndex] = this.dataService.getDialogData();
-    //     // And lastly refresh table
-    //     this.refreshTable();
-    //   }
-    // });
+    
   }
 
   deleteProduct(id: number) {
-    // this.index = i;
-    // this.id = id;
     this.dialog.open(DeleteModalComponent, {
       data: { id: id },
     });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result === 1) {
-    //     const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.id === this.id);
-    //     // for delete we use splice in order to remove single object from DataService
-    //     this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
-    //     this.refreshTable();
-    //   }
-    // });
   }
 
-  private refreshTable() {}
 }
