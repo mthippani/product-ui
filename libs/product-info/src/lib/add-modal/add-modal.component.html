@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>Add Product</h1>
+<form
+  [formGroup]="productForm"
+  (ngSubmit)="onSubmit(productForm.value)"
+  class="form"
+>
+  <div mat-dialog-content>
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput minlength="3" placeholder="Name" formControlName="name" required />
+      <mat-error *ngIf="formControls['name'].hasError('required')">Name is required</mat-error>
+      <mat-error *ngIf="formControls['name'].hasError('minlength')">Name should not be lessthan 3 characters</mat-error>
+    </mat-form-field>
+    <br/>
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput minlength="5" maxlength="1000" formControlName="description" required></textarea>
+      <mat-error *ngIf="formControls['description'].hasError('required')">Description is required</mat-error>
+      <mat-error *ngIf="formControls['description'].hasError('minlength')||formControls['description'].hasError('maxlength')">Description should be greater than or equals 5 characters</mat-error>
+    </mat-form-field>
+    <br/>
+    <mat-form-field appearance="outline">
+      <mat-label>Price</mat-label>
+      <input type="number" min="1" max="20000" matInput placeholder="0.00" formControlName="price" required />
+      <mat-error *ngIf="formControls['price'].hasError('required')">Price is required</mat-error>
+      <mat-error *ngIf="formControls['price'].hasError('min')||formControls['price'].hasError('max')">Price should be between 1 and 20000</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+      mat-button
+      color="primary"
+      type="submit"
+      class="button"
+      [disabled]="!productForm.valid"
+    >
+      Save
+    </button>
+  </div>
+</form>
